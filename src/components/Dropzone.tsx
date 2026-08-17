@@ -44,7 +44,7 @@ export function Dropzone({
       }}
       onDragLeave={() => setOver(false)}
       onDrop={onDrop}
-      className={`mat-grid relative flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed px-6 py-10 text-center transition ${
+      className={`mat-grid relative flex min-h-28 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-5 text-center transition ${
         over
           ? 'border-[color:var(--safe)] bg-[color:color-mix(in_srgb,var(--safe)_12%,transparent)]'
           : 'border-[color:var(--line)] bg-[color:var(--bg-elev)]'
@@ -61,9 +61,9 @@ export function Dropzone({
           e.target.value = ''
         }}
       />
-      <span className="font-display text-2xl font-bold tracking-tight">DROP</span>
-      <p className="mt-2 max-w-md text-[color:var(--muted)]">{label}</p>
-      <p className="mt-1 text-xs text-[color:var(--muted)]">
+      <span className="font-display text-lg font-bold tracking-tight">DROP</span>
+      <p className="mt-1 text-sm text-[color:var(--muted)]">{label}</p>
+      <p className="mt-0.5 text-xs text-[color:var(--muted)]">
         클립보드 붙여넣기도 됩니다 (Ctrl/⌘ + V)
       </p>
     </label>

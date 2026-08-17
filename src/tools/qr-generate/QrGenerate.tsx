@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import QRCode from 'qrcode'
-import { PrivacyBadge } from '../../components/PrivacyBadge.tsx'
 import { Field, OptionPanel, btnGhost, btnPrimary, controlClass } from '../../components/OptionPanel.tsx'
 import { downloadBlob } from '../../lib/download.ts'
 
@@ -78,18 +77,12 @@ export default function QrGenerate() {
   }, [generate])
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-3">
-        <p className="font-mono text-xs tracking-[0.2em] text-[color:var(--safe)] uppercase">
-          Tool
+    <div className="space-y-5">
+      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h1 className="font-display text-2xl font-bold tracking-tight">QR 코드</h1>
+        <p className="text-sm text-[color:var(--muted)]">
+          텍스트, 링크, Wi-Fi, 명함. PNG와 SVG로 저장합니다.
         </p>
-        <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-          QR 코드
-        </h1>
-        <p className="max-w-2xl text-lg text-[color:var(--muted)]">
-          텍스트, 링크, 게스트 Wi-Fi, 명함. PNG와 SVG로 바로 저장합니다.
-        </p>
-        <PrivacyBadge />
       </header>
 
       <div className="flex flex-wrap gap-2">

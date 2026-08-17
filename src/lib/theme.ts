@@ -1,9 +1,10 @@
-const KEY = 'darkroom-theme'
+const KEY = 'toolbox-theme'
+const LEGACY_KEY = 'darkroom-theme'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 
 export function getStoredTheme(): ThemeMode {
-  const v = localStorage.getItem(KEY)
+  const v = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY)
   if (v === 'light' || v === 'dark' || v === 'system') return v
   return 'system'
 }
