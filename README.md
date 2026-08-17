@@ -20,11 +20,17 @@ npm install
 npm run dev
 ```
 
-## 빌드
+## 배포
+
+GitHub Pages: `main`에 푸시하면 Actions가 `https://leessosso.github.io/toolbox/`에 올립니다.
+
+처음 한 번만 저장소 **Settings → Pages → Source**에서 **GitHub Actions**를 고르면 됩니다.
+
+로컬에서 Pages와 같은 경로로 빌드하려면:
 
 ```bash
-npm run build
+BASE_PATH=/toolbox/ npm run build
 npm run preview
 ```
 
-정적 호스팅(Vercel, GitHub Pages, Netlify)에 `dist`만 올리면 됩니다. Vercel용 SPA 리라이트는 `vercel.json`에 들어 있습니다.
+Vercel 등 루트 도메인 호스팅은 `npm run build`만 하면 됩니다. SPA 리라이트는 `vercel.json`에 있습니다.

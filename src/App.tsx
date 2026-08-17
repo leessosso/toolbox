@@ -3,9 +3,11 @@ import { Layout } from './components/Layout.tsx'
 import Home from './pages/Home.tsx'
 import ToolRoute from './pages/ToolRoute.tsx'
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename || undefined}>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
