@@ -23,9 +23,7 @@ export default function Home() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 space-y-1.5">
-          <h1 className="font-display text-xl font-bold tracking-tight sm:text-2xl">
-            암실에서 끝내는 잡일
-          </h1>
+          <h1 className="sr-only">toolbox</h1>
           <PrivacyBadge />
         </div>
         <label className="block w-full sm:max-w-xs">
