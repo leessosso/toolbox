@@ -18,13 +18,13 @@ export function FileList({ files, onRemove, onMove, onClear }: Props) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="font-display text-lg font-bold text-pretty">원본 {files.length}</h2>
+        <h2 className="text-lg font-semibold">원본 {files.length}</h2>
         <button
           type="button"
           onClick={() => {
             if (window.confirm(`원본 ${files.length}개를 모두 지울까요?`)) onClear()
           }}
-          className="rounded-sm text-sm text-[color:var(--muted)] underline-offset-2 hover:text-[color:var(--safe)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)]"
+          className="rounded-sm text-sm text-[color:var(--muted)] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)]"
         >
           모두 지우기
         </button>
@@ -44,7 +44,7 @@ export function FileList({ files, onRemove, onMove, onClear }: Props) {
               const from = Number(e.dataTransfer.getData('text/plain'))
               if (Number.isFinite(from) && from !== index) onMove(from, index)
             }}
-            className={`flex items-center gap-3 rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elev)] p-2 ${onMove ? 'select-none' : ''}`}
+            className={`flex items-center gap-3 rounded-md border border-[color:var(--line)] bg-[color:var(--bg-elev)] p-2 ${onMove ? 'select-none' : ''}`}
           >
             {item.previewUrl ? (
               <img
@@ -72,7 +72,7 @@ export function FileList({ files, onRemove, onMove, onClear }: Props) {
                   type="button"
                   aria-label="위로"
                   disabled={index === 0}
-                  className="rounded px-2 py-0.5 text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)] disabled:opacity-30"
+                  className="rounded px-2 py-0.5 text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)] disabled:opacity-30"
                   onClick={() => onMove(index, index - 1)}
                 >
                   위
@@ -81,7 +81,7 @@ export function FileList({ files, onRemove, onMove, onClear }: Props) {
                   type="button"
                   aria-label="아래로"
                   disabled={index === files.length - 1}
-                  className="rounded px-2 py-0.5 text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)] disabled:opacity-30"
+                  className="rounded px-2 py-0.5 text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)] disabled:opacity-30"
                   onClick={() => onMove(index, index + 1)}
                 >
                   아래
@@ -91,7 +91,7 @@ export function FileList({ files, onRemove, onMove, onClear }: Props) {
             <button
               type="button"
               onClick={() => onRemove(item.id)}
-              className="rounded-full px-3 py-1 text-sm text-[color:var(--muted)] hover:text-[color:var(--safe)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)]"
+              className="rounded-md px-3 py-1 text-sm text-[color:var(--muted)] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)]"
             >
               제거
             </button>

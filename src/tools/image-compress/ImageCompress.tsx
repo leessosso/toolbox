@@ -108,7 +108,7 @@ export default function ImageCompress() {
         <Field label="목표 용량 모드">
           <input
             type="checkbox"
-            className="mt-3 h-5 w-5 accent-[color:var(--safe)]"
+            className="mt-3 h-5 w-5 accent-[color:var(--ink)]"
             checked={targetMode}
             onChange={(e) => setTargetMode(e.target.checked)}
           />
@@ -131,7 +131,7 @@ export default function ImageCompress() {
         <Field label="배경">
           <input
             type="color"
-            className="h-10 w-full rounded-xl border border-[color:var(--line)] bg-[color:var(--bg)]"
+            className="h-10 w-full rounded-md border border-[color:var(--line)] bg-[color:var(--bg)]"
             value={background}
             onChange={(e) => setBackground(e.target.value)}
           />

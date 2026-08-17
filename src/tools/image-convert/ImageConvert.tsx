@@ -68,7 +68,7 @@ export default function ImageConvert() {
         <Field label="불투명 배경">
           <input
             type="color"
-            className="h-10 w-full rounded-xl border border-[color:var(--line)] bg-[color:var(--bg)]"
+            className="h-10 w-full rounded-md border border-[color:var(--line)] bg-[color:var(--bg)]"
             value={background}
             onChange={(e) => setBackground(e.target.value)}
           />

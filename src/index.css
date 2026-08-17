@@ -3,34 +3,33 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
 }
 
 :root {
-  --bg: #f3eee4;
-  --bg-elev: #fffaf1;
-  --ink: #1a1612;
-  --muted: #6b6158;
-  --line: #d9cfc0;
-  --safe: #e24a12;
-  --safe-fg: #fffaf1;
-  --chip: #efe6d6;
-  --shadow: 0 18px 40px -24px rgba(26, 22, 18, 0.45);
+  --bg: #f6f6f6;
+  --bg-elev: #ffffff;
+  --ink: #111111;
+  --muted: #666666;
+  --line: #e2e2e2;
+  --safe: #111111;
+  --safe-fg: #ffffff;
+  --chip: #eeeeee;
+  --danger: #b42318;
   color-scheme: light;
 }
 
 html.dark {
-  --bg: #14110e;
-  --bg-elev: #1c1814;
-  --ink: #f3eee4;
-  --muted: #a3988c;
-  --line: #3a322b;
-  --safe: #ff5a1f;
-  --safe-fg: #14110e;
-  --chip: #2a241e;
-  --shadow: 0 22px 50px -20px rgba(0, 0, 0, 0.7);
+  --bg: #111111;
+  --bg-elev: #1c1c1c;
+  --ink: #f2f2f2;
+  --muted: #9a9a9a;
+  --line: #333333;
+  --safe: #f2f2f2;
+  --safe-fg: #111111;
+  --chip: #2a2a2a;
+  --danger: #f97066;
   color-scheme: dark;
 }
 
@@ -46,7 +45,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   touch-action: manipulation;
-  -webkit-tap-highlight-color: color-mix(in srgb, var(--safe) 22%, transparent);
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1,
@@ -56,37 +55,11 @@ h3 {
   scroll-margin-top: 4.5rem;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-#root {
-  isolation: isolate;
-}
-
-::selection {
-  background: var(--safe);
-  color: var(--safe-fg);
-}
-
 input,
 select,
 textarea,
 button {
   font: inherit;
-}
-
-.mat-grid {
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px);
-  background-size: 28px 28px;
 }
 
 @media (prefers-reduced-motion: reduce) {

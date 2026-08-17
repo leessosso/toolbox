@@ -34,7 +34,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={`테마 ${label[mode]}, 누르면 ${label[next]}`}
       title={`테마: ${label[mode]} → ${label[next]}`}
-      className="grid h-11 w-11 place-items-center rounded-md text-[color:var(--muted)] transition-[color] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)]"
+      className="grid h-11 w-11 place-items-center rounded-md text-[color:var(--muted)] hover:text-[color:var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)]"
       onClick={() => setMode(next)}
     >
       {mode === 'light' ? (

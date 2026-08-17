@@ -20,12 +20,6 @@ type Props = {
   onRun: (files: ListedFile[]) => Promise<ResultItem[]>
 }
 
-function withRetry(message: string) {
-  return /다시|재시도/.test(message)
-    ? message
-    : `${message} 파일을 확인한 뒤 다시 시도하세요.`
-}
-
 export function ToolPage({
   title,
   description,
@@ -120,7 +114,7 @@ export function ToolPage({
       const next = await onRun(files)
       setResults(next)
     } catch (err) {
-      setError(withRetry(err instanceof Error ? err.message : String(err)))
+      setError(err instanceof Error ? err.message : String(err))
     } finally {
       setBusy(false)
     }
@@ -130,9 +124,9 @@ export function ToolPage({
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         {heading === 'h2' ? (
-          <h2 className="font-display text-2xl font-bold tracking-tight text-pretty">{title}</h2>
+          <h2 className="text-2xl font-semibold">{title}</h2>
         ) : (
-          <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">{title}</h1>
+          <h1 className="text-2xl font-semibold">{title}</h1>
         )}
         <p className="text-sm text-[color:var(--muted)]">{description}</p>
       </header>
@@ -163,7 +157,7 @@ export function ToolPage({
           </p>
         )}
         {error && (
-          <p className="text-sm text-[color:var(--safe)]" role="alert">
+          <p className="text-sm text-[color:var(--danger)]" role="alert">
             {error}
           </p>
         )}

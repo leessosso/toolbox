@@ -25,7 +25,7 @@ export default function PdfOrganize() {
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">PDF 정리</h1>
+        <h1 className="text-2xl font-semibold">PDF 정리</h1>
         <p className="text-sm text-[color:var(--muted)]">
           병합하거나, 페이지를 고르고 돌리고 잘라냅니다.
         </p>
@@ -236,8 +236,8 @@ function EditPanel() {
         </button>
       </div>
       {error && (
-        <p className="text-sm text-[color:var(--safe)]" role="alert">
-          {error} 파일을 확인한 뒤 다시 시도하세요.
+        <p className="text-sm text-[color:var(--danger)]" role="alert">
+          {error}
         </p>
       )}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
@@ -252,7 +252,7 @@ function EditPanel() {
                   ),
                 )
               }
-              className={`w-full overflow-hidden rounded-xl border p-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)] ${
+              className={`w-full overflow-hidden rounded-md border p-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)] ${
                 t.selected
                   ? 'border-[color:var(--safe)] ring-2 ring-[color:var(--safe)]'
                   : 'border-[color:var(--line)]'
@@ -264,7 +264,7 @@ function EditPanel() {
                 width={160}
                 height={220}
                 loading="lazy"
-                className="w-full bg-[color:var(--chip)] motion-safe:transition-transform"
+                className="w-full bg-[color:var(--chip)]"
                 style={{ transform: `rotate(${t.rotation}deg)` }}
               />
               <span className="mt-1 block font-mono text-xs">

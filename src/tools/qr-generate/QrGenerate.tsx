@@ -27,8 +27,8 @@ export default function QrGenerate() {
   const [email, setEmail] = useState('')
   const [ecc, setEcc] = useState<'L' | 'M' | 'Q' | 'H'>('M')
   const [size, setSize] = useState(320)
-  const [dark, setDark] = useState('#1a1612')
-  const [light, setLight] = useState('#f3eee4')
+  const [dark, setDark] = useState('#111111')
+  const [light, setLight] = useState('#ffffff')
   const [png, setPng] = useState<string>('')
   const [svg, setSvg] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
@@ -90,7 +90,7 @@ export default function QrGenerate() {
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">QR 코드</h1>
+        <h1 className="text-2xl font-semibold">QR 코드</h1>
         <p className="text-sm text-[color:var(--muted)]">
           텍스트, 링크, Wi-Fi, 명함. PNG와 SVG로 저장합니다.
         </p>
@@ -141,7 +141,7 @@ export default function QrGenerate() {
             <Field label="숨겨진 네트워크">
               <input
                 type="checkbox"
-                className="mt-3 h-5 w-5 accent-[color:var(--safe)]"
+                className="mt-3 h-5 w-5 accent-[color:var(--ink)]"
                 checked={hidden}
                 onChange={(e) => setHidden(e.target.checked)}
               />
@@ -214,10 +214,10 @@ export default function QrGenerate() {
           />
         </Field>
         <Field label="전경">
-          <input type="color" className="h-10 w-full rounded-xl border border-[color:var(--line)]" value={dark} onChange={(e) => setDark(e.target.value)} />
+          <input type="color" className="h-10 w-full rounded-md border border-[color:var(--line)]" value={dark} onChange={(e) => setDark(e.target.value)} />
         </Field>
         <Field label="배경">
-          <input type="color" className="h-10 w-full rounded-xl border border-[color:var(--line)]" value={light} onChange={(e) => setLight(e.target.value)} />
+          <input type="color" className="h-10 w-full rounded-md border border-[color:var(--line)]" value={light} onChange={(e) => setLight(e.target.value)} />
         </Field>
       </OptionPanel>
 
@@ -225,14 +225,14 @@ export default function QrGenerate() {
         생성
       </button>
       {error && (
-        <p className="text-sm text-[color:var(--safe)]" role="alert">
-          {error} 내용을 확인한 뒤 다시 생성하세요.
+        <p className="text-sm text-[color:var(--danger)]" role="alert">
+          {error}
         </p>
       )}
 
       {png && (
         <div className="flex flex-col items-start gap-4 sm:flex-row">
-          <img src={png} alt="QR 미리보기" className="rounded-2xl border border-[color:var(--line)]" width={size} height={size} />
+          <img src={png} alt="QR 미리보기" className="rounded-md border border-[color:var(--line)]" width={size} height={size} />
           <div className="flex flex-col gap-2">
             <button
               type="button"
