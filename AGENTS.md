@@ -2,7 +2,7 @@
 
 ## Cursor Cloud specific instructions
 
-toolbox is a **fully client-side** React 19 + TypeScript + Vite 8 single-page app. There is **no backend, database, or secrets** — all PDF/image/text/QR processing runs in the browser (some in Web Workers under `src/workers/`). Nothing to run other than the frontend.
+Toolbox (package name `toolbox`) is a **fully client-side** React 19 + TypeScript + Vite 8 single-page app. There is **no backend, database, or secrets** — all PDF/image/text/QR processing runs in the browser (some in Web Workers under `src/workers/`). Nothing to run other than the frontend.
 
 Standard commands live in `package.json`; use them directly:
 - Dev server: `npm run dev` (Vite on `http://localhost:5173/`).

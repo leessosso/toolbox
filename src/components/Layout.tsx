@@ -8,7 +8,7 @@ export function Layout() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <NavLink to="/" className="flex items-baseline gap-2">
             <span className="font-display text-xl font-extrabold tracking-tight">
-              toolbox
+              Toolbox
             </span>
           </NavLink>
           <ThemeToggle />
