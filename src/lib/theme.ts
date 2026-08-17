@@ -22,6 +22,14 @@ export function applyTheme(mode: ThemeMode) {
   const resolved = resolveTheme(mode)
   document.documentElement.classList.toggle('dark', resolved === 'dark')
   localStorage.setItem(KEY, mode)
+  const color = resolved === 'dark' ? '#14110e' : '#f3eee4'
+  let meta = document.querySelector('meta[name="theme-color"]')
+  if (!meta) {
+    meta = document.createElement('meta')
+    meta.setAttribute('name', 'theme-color')
+    document.head.append(meta)
+  }
+  meta.setAttribute('content', color)
 }
 
 export function applyStoredTheme() {

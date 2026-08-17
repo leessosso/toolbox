@@ -24,7 +24,7 @@ export function ResultGrid({ results, zipName = 'results.zip' }: Props) {
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-lg font-bold">결과 {ok.length}</h2>
+        <h2 className="font-display text-lg font-bold text-pretty">결과 {ok.length}</h2>
         {ok.length > 1 && (
           <button
             type="button"
@@ -50,15 +50,20 @@ export function ResultGrid({ results, zipName = 'results.zip' }: Props) {
               <img
                 src={item.previewUrl}
                 alt=""
+                width={400}
+                height={300}
+                loading="lazy"
                 className="aspect-[4/3] w-full bg-[color:var(--chip)] object-contain"
               />
             ) : null}
             <div className="space-y-2 p-3">
               <p className="truncate font-medium">{item.name}</p>
               {item.error ? (
-                <p className="text-sm text-[color:var(--safe)]">{item.error}</p>
+                <p className="text-sm text-[color:var(--safe)]" role="alert">
+                  {item.error} 다른 파일로 다시 시도하세요.
+                </p>
               ) : (
-                <p className="font-mono text-xs text-[color:var(--muted)]">
+                <p className="font-mono text-xs tabular-nums text-[color:var(--muted)]">
                   {formatBytes(item.blob.size)}
                   {item.originalSize
                     ? `  ←  ${formatBytes(item.originalSize)}`

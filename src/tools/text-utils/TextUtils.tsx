@@ -1,7 +1,10 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { btnGhost, controlClass } from '../../components/OptionPanel.tsx'
 
 type Mode = 'json' | 'base64' | 'url' | 'hash' | 'case'
+
+const modes: Mode[] = ['json', 'base64', 'url', 'hash', 'case']
 
 async function sha(algo: 'SHA-1' | 'SHA-256' | 'SHA-512', text: string) {
   const data = new TextEncoder().encode(text)
@@ -10,11 +13,19 @@ async function sha(algo: 'SHA-1' | 'SHA-256' | 'SHA-512', text: string) {
 }
 
 export default function TextUtils() {
-  const [mode, setMode] = useState<Mode>('json')
+  const [params, setParams] = useSearchParams()
+  const raw = params.get('mode')
+  const mode: Mode = modes.includes(raw as Mode) ? (raw as Mode) : 'json'
+  const setMode = (id: Mode) => {
+    const sp = new URLSearchParams(params)
+    if (id === 'json') sp.delete('mode')
+    else sp.set('mode', id)
+    setParams(sp, { replace: true })
+  }
   const [input, setInput] = useState('')
   const [hashAlgo, setHashAlgo] = useState<'SHA-1' | 'SHA-256' | 'SHA-512'>('SHA-256')
   const [hash, setHash] = useState('')
-  const [actionError, setActionError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<{ tone: 'error' | 'ok'; text: string } | null>(null)
 
   const computed = useMemo(() => {
     try {
@@ -41,18 +52,24 @@ export default function TextUtils() {
   const decodeBase64 = () => {
     try {
       setInput(decodeURIComponent(escape(atob(input))))
-      setActionError(null)
+      setNotice(null)
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : '디코드 실패')
+      setNotice({
+        tone: 'error',
+        text: `${err instanceof Error ? err.message : '디코드 실패'} 값을 확인한 뒤 다시 시도하세요.`,
+      })
     }
   }
 
   const minifyJson = () => {
     try {
       setInput(JSON.stringify(JSON.parse(input)))
-      setActionError(null)
+      setNotice(null)
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : String(err))
+      setNotice({
+        tone: 'error',
+        text: `${err instanceof Error ? err.message : String(err)} JSON을 확인한 뒤 다시 시도하세요.`,
+      })
     }
   }
 
@@ -66,7 +83,7 @@ export default function TextUtils() {
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight">텍스트 유틸</h1>
+        <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">텍스트 유틸</h1>
         <p className="text-sm text-[color:var(--muted)]">
           JSON 정리, Base64, URL 인코딩, SHA 해시.
         </p>
@@ -99,6 +116,8 @@ export default function TextUtils() {
           <span className="text-sm text-[color:var(--muted)]">입력</span>
           <textarea
             className={`${controlClass} min-h-72 resize-y font-mono text-sm`}
+            name="input"
+            autoComplete="off"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
@@ -134,9 +153,12 @@ export default function TextUtils() {
               onClick={() => {
                 try {
                   JSON.parse(input)
-                  setActionError('유효한 JSON입니다.')
+                  setNotice({ tone: 'ok', text: '유효한 JSON입니다.' })
                 } catch (err) {
-                  setActionError(err instanceof Error ? err.message : String(err))
+                  setNotice({
+                    tone: 'error',
+                    text: `${err instanceof Error ? err.message : String(err)} JSON을 고친 뒤 다시 검증하세요.`,
+                  })
                 }
               }}
             >
@@ -156,9 +178,12 @@ export default function TextUtils() {
             onClick={() => {
               try {
                 setInput(decodeURIComponent(input))
-                setActionError(null)
+                setNotice(null)
               } catch (err) {
-                setActionError(err instanceof Error ? err.message : String(err))
+                setNotice({
+                  tone: 'error',
+                  text: `${err instanceof Error ? err.message : String(err)} 인코딩을 확인한 뒤 다시 시도하세요.`,
+                })
               }
             }}
           >
@@ -167,15 +192,21 @@ export default function TextUtils() {
         )}
         {mode === 'hash' && (
           <>
-            <select
-              className={`${controlClass} w-auto`}
-              value={hashAlgo}
-              onChange={(e) => setHashAlgo(e.target.value as typeof hashAlgo)}
-            >
+            <label className="flex items-center gap-2">
+              <span className="sr-only">해시 알고리즘</span>
+              <select
+                className={`${controlClass} w-auto`}
+                aria-label="해시 알고리즘"
+                name="hash-algo"
+                autoComplete="off"
+                value={hashAlgo}
+                onChange={(e) => setHashAlgo(e.target.value as typeof hashAlgo)}
+              >
               <option value="SHA-1">SHA-1</option>
               <option value="SHA-256">SHA-256</option>
               <option value="SHA-512">SHA-512</option>
             </select>
+            </label>
             <button type="button" className={btnGhost} onClick={() => void runHash()}>
               해시 계산
             </button>
@@ -193,8 +224,21 @@ export default function TextUtils() {
           출력 복사
         </button>
       </div>
-      {(actionError || computed.error) && (
-        <p className="text-sm text-[color:var(--safe)]">{actionError || computed.error}</p>
+      {(notice || computed.error) && (
+        <p
+          className={`text-sm ${
+            notice?.tone === 'ok'
+              ? 'text-[color:var(--muted)]'
+              : 'text-[color:var(--safe)]'
+          }`}
+          role={notice?.tone === 'ok' ? 'status' : 'alert'}
+          aria-live="polite"
+        >
+          {notice?.text ||
+            (computed.error
+              ? `${computed.error} JSON을 고친 뒤 다시 시도하세요.`
+              : null)}
+        </p>
       )}
     </div>
   )

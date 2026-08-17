@@ -1,6 +1,9 @@
 export function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes < 0) return '—'
-  if (bytes < 1024) return `${bytes} B`
+  const nbsp = '\u00a0'
+  if (bytes < 1024) {
+    return `${new Intl.NumberFormat().format(bytes)}${nbsp}B`
+  }
   const units = ['KB', 'MB', 'GB']
   let n = bytes / 1024
   let i = 0
@@ -9,7 +12,11 @@ export function formatBytes(bytes: number): string {
     i += 1
   }
   const digits = n >= 100 || i === 0 ? 0 : n >= 10 ? 1 : 2
-  return `${n.toFixed(digits)} ${units[i]}`
+  const formatted = new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: 0,
+  }).format(Number(n.toFixed(digits)))
+  return `${formatted}${nbsp}${units[i]}`
 }
 
 export function formatDims(width: number, height: number): string {

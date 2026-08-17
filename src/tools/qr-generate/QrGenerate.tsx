@@ -1,12 +1,23 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import QRCode from 'qrcode'
 import { Field, OptionPanel, btnGhost, btnPrimary, controlClass } from '../../components/OptionPanel.tsx'
 import { downloadBlob } from '../../lib/download.ts'
 
 type Preset = 'text' | 'url' | 'wifi' | 'vcard'
 
+const presets: Preset[] = ['text', 'url', 'wifi', 'vcard']
+
 export default function QrGenerate() {
-  const [preset, setPreset] = useState<Preset>('text')
+  const [params, setParams] = useSearchParams()
+  const raw = params.get('preset')
+  const preset: Preset = presets.includes(raw as Preset) ? (raw as Preset) : 'text'
+  const setPreset = (id: Preset) => {
+    const sp = new URLSearchParams(params)
+    if (id === 'text') sp.delete('preset')
+    else sp.set('preset', id)
+    setParams(sp, { replace: true })
+  }
   const [text, setText] = useState('https://')
   const [ssid, setSsid] = useState('')
   const [password, setPassword] = useState('')
@@ -79,7 +90,7 @@ export default function QrGenerate() {
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight">QR 코드</h1>
+        <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">QR 코드</h1>
         <p className="text-sm text-[color:var(--muted)]">
           텍스트, 링크, Wi-Fi, 명함. PNG와 SVG로 저장합니다.
         </p>
@@ -109,10 +120,23 @@ export default function QrGenerate() {
         {preset === 'wifi' ? (
           <>
             <Field label="네트워크 이름">
-              <input className={controlClass} value={ssid} onChange={(e) => setSsid(e.target.value)} />
+              <input
+                className={controlClass}
+                name="ssid"
+                autoComplete="off"
+                value={ssid}
+                onChange={(e) => setSsid(e.target.value)}
+              />
             </Field>
             <Field label="비밀번호">
-              <input className={controlClass} value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input
+                className={controlClass}
+                type="password"
+                name="wifi-password"
+                autoComplete="off"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Field>
             <Field label="숨겨진 네트워크">
               <input
@@ -126,19 +150,46 @@ export default function QrGenerate() {
         ) : preset === 'vcard' ? (
           <>
             <Field label="이름">
-              <input className={controlClass} value={name} onChange={(e) => setName(e.target.value)} />
+              <input
+                className={controlClass}
+                name="fn"
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </Field>
             <Field label="전화">
-              <input className={controlClass} value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <input
+                className={controlClass}
+                type="tel"
+                inputMode="tel"
+                name="tel"
+                autoComplete="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
             </Field>
             <Field label="이메일">
-              <input className={controlClass} value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                className={controlClass}
+                type="email"
+                inputMode="email"
+                name="email"
+                autoComplete="email"
+                spellCheck={false}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Field>
           </>
         ) : (
           <Field label={preset === 'url' ? 'URL' : '텍스트'}>
             <textarea
               className={`${controlClass} min-h-24 sm:col-span-2`}
+              name={preset === 'url' ? 'url' : 'text'}
+              autoComplete="off"
+              inputMode={preset === 'url' ? 'url' : undefined}
+              spellCheck={false}
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
@@ -173,7 +224,11 @@ export default function QrGenerate() {
       <button type="button" className={btnPrimary} onClick={() => void generate()}>
         생성
       </button>
-      {error && <p className="text-sm text-[color:var(--safe)]">{error}</p>}
+      {error && (
+        <p className="text-sm text-[color:var(--safe)]" role="alert">
+          {error} 내용을 확인한 뒤 다시 생성하세요.
+        </p>
+      )}
 
       {png && (
         <div className="flex flex-col items-start gap-4 sm:flex-row">
