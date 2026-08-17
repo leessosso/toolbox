@@ -3,7 +3,6 @@ import { ToolPage } from '../../components/ToolPage.tsx'
 import { Field, OptionPanel, btnGhost, btnPrimary, controlClass } from '../../components/OptionPanel.tsx'
 import { Dropzone } from '../../components/Dropzone.tsx'
 import { FileList, type ListedFile } from '../../components/FileList.tsx'
-import { PrivacyBadge } from '../../components/PrivacyBadge.tsx'
 import { downloadBlob, u8Blob } from '../../lib/download.ts'
 import { parsePageRange, stem } from '../../lib/format.ts'
 import { loadPdf } from '../../lib/pdfjs.ts'
@@ -15,18 +14,12 @@ export default function PdfOrganize() {
   const [tab, setTab] = useState<'merge' | 'edit'>('merge')
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-3">
-        <p className="font-mono text-xs tracking-[0.2em] text-[color:var(--safe)] uppercase">
-          Tool
+    <div className="space-y-5">
+      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h1 className="font-display text-2xl font-bold tracking-tight">PDF 정리</h1>
+        <p className="text-sm text-[color:var(--muted)]">
+          병합하거나, 페이지를 고르고 돌리고 잘라냅니다.
         </p>
-        <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-          PDF 정리
-        </h1>
-        <p className="max-w-2xl text-lg text-[color:var(--muted)]">
-          여러 파일을 이어 붙이거나, 한 파일에서 페이지를 고르고 돌리고 잘라냅니다.
-        </p>
-        <PrivacyBadge />
       </header>
       <div className="flex gap-2">
         <button

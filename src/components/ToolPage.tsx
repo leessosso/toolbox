@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { uid } from '../lib/format.ts'
 import { Dropzone } from './Dropzone.tsx'
 import { FileList, type ListedFile } from './FileList.tsx'
-import { PrivacyBadge } from './PrivacyBadge.tsx'
 import { ResultGrid, type ResultItem } from './ResultGrid.tsx'
 import { btnPrimary } from './OptionPanel.tsx'
 
@@ -110,16 +109,10 @@ export function ToolPage({
   }
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-3">
-        <p className="font-mono text-xs tracking-[0.2em] text-[color:var(--safe)] uppercase">
-          Tool
-        </p>
-        <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-          {title}
-        </h1>
-        <p className="max-w-2xl text-lg text-[color:var(--muted)]">{description}</p>
-        <PrivacyBadge />
+    <div className="space-y-5">
+      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h1 className="font-display text-2xl font-bold tracking-tight">{title}</h1>
+        <p className="text-sm text-[color:var(--muted)]">{description}</p>
       </header>
 
       <Dropzone accept={accept} multiple={multiple} onFiles={addFiles} label={dropLabel} />

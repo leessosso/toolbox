@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { PrivacyBadge } from '../../components/PrivacyBadge.tsx'
 import { btnGhost, controlClass } from '../../components/OptionPanel.tsx'
 
 type Mode = 'json' | 'base64' | 'url' | 'hash' | 'case'
@@ -65,18 +64,12 @@ export default function TextUtils() {
         : computed.output
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-3">
-        <p className="font-mono text-xs tracking-[0.2em] text-[color:var(--safe)] uppercase">
-          Tool
+    <div className="space-y-5">
+      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h1 className="font-display text-2xl font-bold tracking-tight">텍스트 유틸</h1>
+        <p className="text-sm text-[color:var(--muted)]">
+          JSON 정리, Base64, URL 인코딩, SHA 해시.
         </p>
-        <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-          텍스트 유틸
-        </h1>
-        <p className="max-w-2xl text-lg text-[color:var(--muted)]">
-          JSON 정리, Base64, URL 인코딩, SHA 해시. 브라우저 Web Crypto만 사용합니다.
-        </p>
-        <PrivacyBadge />
       </header>
 
       <div className="flex flex-wrap gap-2">

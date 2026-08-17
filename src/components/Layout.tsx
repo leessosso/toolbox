@@ -17,10 +17,10 @@ export function Layout() {
           <ThemeToggle />
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-10">
+      <main className="mx-auto max-w-6xl px-4 py-5">
         <Outlet />
       </main>
-      <footer className="mx-auto max-w-6xl px-4 pb-12 text-sm text-[color:var(--muted)]">
+      <footer className="mx-auto max-w-6xl px-4 pb-8 text-sm text-[color:var(--muted)]">
         암실처럼, 작업물은 밖으로 나가지 않습니다.
       </footer>
     </div>
