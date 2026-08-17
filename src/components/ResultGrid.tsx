@@ -24,7 +24,7 @@ export function ResultGrid({ results, zipName = 'results.zip' }: Props) {
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-lg font-bold text-pretty">결과 {ok.length}</h2>
+        <h2 className="text-lg font-semibold">결과 {ok.length}</h2>
         {ok.length > 1 && (
           <button
             type="button"
@@ -44,7 +44,7 @@ export function ResultGrid({ results, zipName = 'results.zip' }: Props) {
         {results.map((item) => (
           <li
             key={item.id}
-            className="overflow-hidden rounded-2xl border border-[color:var(--line)] bg-[color:var(--bg-elev)]"
+            className="overflow-hidden rounded-md border border-[color:var(--line)] bg-[color:var(--bg-elev)]"
           >
             {item.previewUrl && !item.error ? (
               <img
@@ -59,8 +59,8 @@ export function ResultGrid({ results, zipName = 'results.zip' }: Props) {
             <div className="space-y-2 p-3">
               <p className="truncate font-medium">{item.name}</p>
               {item.error ? (
-                <p className="text-sm text-[color:var(--safe)]" role="alert">
-                  {item.error} 다른 파일로 다시 시도하세요.
+                <p className="text-sm text-[color:var(--danger)]" role="alert">
+                  {item.error}
                 </p>
               ) : (
                 <p className="font-mono text-xs tabular-nums text-[color:var(--muted)]">

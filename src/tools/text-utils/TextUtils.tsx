@@ -56,7 +56,7 @@ export default function TextUtils() {
     } catch (err) {
       setNotice({
         tone: 'error',
-        text: `${err instanceof Error ? err.message : '디코드 실패'} 값을 확인한 뒤 다시 시도하세요.`,
+        text: err instanceof Error ? err.message : '디코드 실패',
       })
     }
   }
@@ -68,7 +68,7 @@ export default function TextUtils() {
     } catch (err) {
       setNotice({
         tone: 'error',
-        text: `${err instanceof Error ? err.message : String(err)} JSON을 확인한 뒤 다시 시도하세요.`,
+        text: err instanceof Error ? err.message : String(err),
       })
     }
   }
@@ -83,7 +83,7 @@ export default function TextUtils() {
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">텍스트 유틸</h1>
+        <h1 className="text-2xl font-semibold">텍스트 유틸</h1>
         <p className="text-sm text-[color:var(--muted)]">
           JSON 정리, Base64, URL 인코딩, SHA 해시.
         </p>
@@ -157,7 +157,7 @@ export default function TextUtils() {
                 } catch (err) {
                   setNotice({
                     tone: 'error',
-                    text: `${err instanceof Error ? err.message : String(err)} JSON을 고친 뒤 다시 검증하세요.`,
+                    text: err instanceof Error ? err.message : String(err),
                   })
                 }
               }}
@@ -182,7 +182,7 @@ export default function TextUtils() {
               } catch (err) {
                 setNotice({
                   tone: 'error',
-                  text: `${err instanceof Error ? err.message : String(err)} 인코딩을 확인한 뒤 다시 시도하세요.`,
+                  text: err instanceof Error ? err.message : String(err),
                 })
               }
             }}
@@ -229,15 +229,12 @@ export default function TextUtils() {
           className={`text-sm ${
             notice?.tone === 'ok'
               ? 'text-[color:var(--muted)]'
-              : 'text-[color:var(--safe)]'
+              : 'text-[color:var(--danger)]'
           }`}
           role={notice?.tone === 'ok' ? 'status' : 'alert'}
           aria-live="polite"
         >
-          {notice?.text ||
-            (computed.error
-              ? `${computed.error} JSON을 고친 뒤 다시 시도하세요.`
-              : null)}
+          {notice?.text || computed.error}
         </p>
       )}
     </div>

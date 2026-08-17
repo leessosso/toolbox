@@ -51,7 +51,7 @@ export function QualitySlider({
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[color:var(--safe)]"
+        className="w-full accent-[color:var(--ink)]"
       />
       <span className="w-10 font-mono text-sm">{Math.round(value * 100)}</span>
     </div>

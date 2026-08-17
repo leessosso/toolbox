@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { PrivacyBadge } from '../components/PrivacyBadge.tsx'
 import { controlClass } from '../components/OptionPanel.tsx'
 import { categoryLabel, tools, type ToolCategory } from '../tools/registry.ts'
 
@@ -22,18 +21,15 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0 space-y-1.5">
-          <h1 className="sr-only">Toolbox</h1>
-          <PrivacyBadge />
-        </div>
-        <label className="block w-full sm:max-w-xs">
+      <div className="max-w-xs">
+        <h1 className="sr-only">Toolbox</h1>
+        <label className="block">
           <span className="sr-only">도구 검색</span>
           <input
             className={controlClass}
             name="q"
             autoComplete="off"
-            placeholder="검색 — pdf, 압축, qr…"
+            placeholder="검색…"
             value={q}
             onChange={(e) => {
               const next = new URLSearchParams(params)
@@ -50,16 +46,16 @@ export default function Home() {
         const group = filtered.filter((t) => t.category === cat)
         if (!group.length) return null
         return (
-          <section key={cat} className="space-y-3">
-            <h2 className="font-display text-lg font-bold text-pretty">{categoryLabel[cat]}</h2>
+          <section key={cat} className="space-y-2">
+            <h2 className="text-sm font-semibold text-[color:var(--muted)]">{categoryLabel[cat]}</h2>
             <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {group.map((tool) => (
                 <li key={tool.id} className="min-w-0">
                   <Link
                     to={`/t/${tool.id}`}
-                    className="block h-full rounded-xl border border-[color:var(--line)] bg-[color:var(--bg-elev)] px-4 py-3 transition-[border-color,box-shadow,transform] motion-safe:hover:-translate-y-0.5 hover:border-[color:var(--safe)] hover:shadow-[var(--shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)]"
+                    className="block h-full rounded-md border border-[color:var(--line)] bg-[color:var(--bg-elev)] px-3 py-3 hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink)]"
                   >
-                    <h3 className="font-display text-lg font-bold text-pretty">{tool.name}</h3>
+                    <h3 className="font-semibold">{tool.name}</h3>
                     <p className="mt-1 line-clamp-2 text-sm text-[color:var(--muted)]">
                       {tool.description}
                     </p>
@@ -72,7 +68,7 @@ export default function Home() {
       })}
 
       {filtered.length === 0 && (
-        <p className="text-[color:var(--muted)]">맞는 도구가 없습니다. 검색어를 바꿔 보세요.</p>
+        <p className="text-[color:var(--muted)]">맞는 도구가 없습니다.</p>
       )}
     </div>
   )
