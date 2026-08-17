@@ -10,7 +10,9 @@ export default function ToolRoute() {
   return (
     <Suspense
       fallback={
-        <p className="font-mono text-sm text-[color:var(--muted)]">도구 불러오는 중…</p>
+        <p className="font-mono text-sm text-[color:var(--muted)]" aria-live="polite">
+          도구 불러오는 중…
+        </p>
       }
     >
       <Component />

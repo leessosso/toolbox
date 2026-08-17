@@ -15,8 +15,15 @@ type Props = {
   previewImages?: boolean
   reorder?: boolean
   actionLabel?: string
+  heading?: 'h1' | 'h2'
   children?: ReactNode
   onRun: (files: ListedFile[]) => Promise<ResultItem[]>
+}
+
+function withRetry(message: string) {
+  return /다시|재시도/.test(message)
+    ? message
+    : `${message} 파일을 확인한 뒤 다시 시도하세요.`
 }
 
 export function ToolPage({
@@ -29,6 +36,7 @@ export function ToolPage({
   previewImages = false,
   reorder = false,
   actionLabel = '변환하기',
+  heading = 'h1',
   children,
   onRun,
 }: Props) {
@@ -62,6 +70,16 @@ export function ToolPage({
     window.addEventListener('paste', onPaste)
     return () => window.removeEventListener('paste', onPaste)
   }, [addFiles])
+
+  useEffect(() => {
+    if (!files.length) return
+    const onLeave = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    window.addEventListener('beforeunload', onLeave)
+    return () => window.removeEventListener('beforeunload', onLeave)
+  }, [files.length])
 
   useEffect(() => {
     return () => {
@@ -102,7 +120,7 @@ export function ToolPage({
       const next = await onRun(files)
       setResults(next)
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
+      setError(withRetry(err instanceof Error ? err.message : String(err)))
     } finally {
       setBusy(false)
     }
@@ -111,7 +129,11 @@ export function ToolPage({
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight">{title}</h1>
+        {heading === 'h2' ? (
+          <h2 className="font-display text-2xl font-bold tracking-tight text-pretty">{title}</h2>
+        ) : (
+          <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">{title}</h1>
+        )}
         <p className="text-sm text-[color:var(--muted)]">{description}</p>
       </header>
 
@@ -135,7 +157,16 @@ export function ToolPage({
         >
           {busy ? '처리 중…' : actionLabel}
         </button>
-        {error && <p className="text-sm text-[color:var(--safe)]">{error}</p>}
+        {busy && (
+          <p className="text-sm text-[color:var(--muted)]" aria-live="polite">
+            처리 중…
+          </p>
+        )}
+        {error && (
+          <p className="text-sm text-[color:var(--safe)]" role="alert">
+            {error}
+          </p>
+        )}
       </div>
 
       <ResultGrid results={results} zipName={zipName} />

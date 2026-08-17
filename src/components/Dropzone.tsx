@@ -44,9 +44,9 @@ export function Dropzone({
       }}
       onDragLeave={() => setOver(false)}
       onDrop={onDrop}
-      className={`mat-grid relative flex min-h-28 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-5 text-center transition ${
+      className={`mat-grid relative flex min-h-28 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-5 text-center transition-[border-color,background-color] ${
         over
-          ? 'border-[color:var(--safe)] bg-[color:color-mix(in_srgb,var(--safe)_12%,transparent)]'
+          ? 'select-none border-[color:var(--safe)] bg-[color:color-mix(in_srgb,var(--safe)_12%,transparent)]'
           : 'border-[color:var(--line)] bg-[color:var(--bg-elev)]'
       }`}
     >

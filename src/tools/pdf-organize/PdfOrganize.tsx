@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { ToolPage } from '../../components/ToolPage.tsx'
 import { Field, OptionPanel, btnGhost, btnPrimary, controlClass } from '../../components/OptionPanel.tsx'
 import { Dropzone } from '../../components/Dropzone.tsx'
@@ -11,12 +12,20 @@ import { editPdf, extractPdfPages, mergePdfs } from '../../lib/pdfClient.ts'
 type Thumb = { page: number; url: string; rotation: number; selected: boolean }
 
 export default function PdfOrganize() {
-  const [tab, setTab] = useState<'merge' | 'edit'>('merge')
+  const [params, setParams] = useSearchParams()
+  const tab = params.get('tab') === 'edit' ? 'edit' : 'merge'
+
+  const setTab = (next: 'merge' | 'edit') => {
+    const sp = new URLSearchParams(params)
+    if (next === 'merge') sp.delete('tab')
+    else sp.set('tab', 'edit')
+    setParams(sp, { replace: true })
+  }
 
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-display text-2xl font-bold tracking-tight">PDF 정리</h1>
+        <h1 className="font-display text-2xl font-bold tracking-tight text-pretty">PDF 정리</h1>
         <p className="text-sm text-[color:var(--muted)]">
           병합하거나, 페이지를 고르고 돌리고 잘라냅니다.
         </p>
@@ -47,6 +56,7 @@ function MergePanel() {
     <ToolPage
       title="병합"
       description="위에서 아래로 이어집니다. 드래그로 순서를 바꾸세요."
+      heading="h2"
       accept="application/pdf,.pdf"
       reorder
       actionLabel="합치기"
@@ -117,6 +127,14 @@ function EditPanel() {
 
   const saveEdit = async () => {
     if (!file) return
+    if (
+      selected.length &&
+      !window.confirm(
+        `선택된 ${selected.length}페이지가 저장본에서 삭제됩니다. 계속할까요?`,
+      )
+    ) {
+      return
+    }
     setBusy(true)
     setError(null)
     try {
@@ -178,7 +196,9 @@ function EditPanel() {
         <Field label="추출 범위">
           <input
             className={controlClass}
-            placeholder="1-3, 8"
+            placeholder="1-3, 8…"
+            name="range"
+            autoComplete="off"
             value={range}
             onChange={(e) => setRange(e.target.value)}
           />
@@ -215,7 +235,11 @@ function EditPanel() {
           {busy ? '처리 중…' : '삭제·회전 적용 후 저장'}
         </button>
       </div>
-      {error && <p className="text-sm text-[color:var(--safe)]">{error}</p>}
+      {error && (
+        <p className="text-sm text-[color:var(--safe)]" role="alert">
+          {error} 파일을 확인한 뒤 다시 시도하세요.
+        </p>
+      )}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
         {thumbs.map((t) => (
           <li key={t.page}>
@@ -228,7 +252,7 @@ function EditPanel() {
                   ),
                 )
               }
-              className={`w-full overflow-hidden rounded-xl border p-1 text-left ${
+              className={`w-full overflow-hidden rounded-xl border p-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--safe)] ${
                 t.selected
                   ? 'border-[color:var(--safe)] ring-2 ring-[color:var(--safe)]'
                   : 'border-[color:var(--line)]'
@@ -237,7 +261,10 @@ function EditPanel() {
               <img
                 src={t.url}
                 alt={`${t.page}페이지`}
-                className="w-full bg-[color:var(--chip)]"
+                width={160}
+                height={220}
+                loading="lazy"
+                className="w-full bg-[color:var(--chip)] motion-safe:transition-transform"
                 style={{ transform: `rotate(${t.rotation}deg)` }}
               />
               <span className="mt-1 block font-mono text-xs">
